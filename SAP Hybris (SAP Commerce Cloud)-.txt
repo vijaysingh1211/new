@@ -1,0 +1,186 @@
+Authorization:
+Authorization determines what the authenticated user is allowed to do.
+Example:
+Admin:
+✅ Create products
+✅ Delete products
+✅ Manage users
+
+Customer:
+✅ View products
+✅ Place orders
+❌ Delete products
+
+
+Users:
+SAP Commerce has different user types.
+Examples:
+Customer
+Employee
+Administrator
+Anonymous User
+
+Each user has different permissions.
+
+
+User Groups:
+Instead of assigning permissions to every user individually, users are added to groups.
+Example:
+Administrators
+      ↓
+Alice
+Bob
+Product Managers
+      ↓
+John
+Sarah
+Permissions are assigned to the group, and all users in that group inherit those permissions.
+
+Roles or Permissions:
+
+Permissions define what a user or group can do.
+
+Examples:
+
+Read
+Create
+Change
+Delete
+
+
+Access Rights:
+
+Spring Security:
+
+SAP Commerce uses Spring Security to handle:
+
+Login
+Logout
+Session management
+URL protection
+Authentication
+Authorization
+
+
+Session Management:
+
+After a successful login:
+
+Login
+   ↓
+Session Created
+   ↓
+User Browses Website
+   ↓
+Logout
+   ↓
+Session Destroyed
+
+
+Password Security:
+
+Passwords are not stored as plain text.
+
+They are stored in an encrypted (hashed) form.
+
+
+Security in Backoffice:
+
+Different users see different features.
+
+Example:
+
+Admin:
+
+Products
+Orders
+Customers
+Users
+System
+
+Product Manager:
+
+Products
+Categories
+Catalogs
+
+
+What is the difference between Authentication and Authorization?
+Authentication	        Authorization
+Verifies identity	Verifies permissions
+Happens first	        Happens after authentication
+Example: Login	        Example: Access control
+
+
+Transaction: 
+A Transaction is a group of operations that are treated as a single unit of work.
+This means either all operations succeed, or none of them are saved.
+This helps maintain data consistency in the database.
+
+ACID Properties:
+1. Atomicity
+"All or Nothing."
+Either all operations succeed or all fail(Rollback).
+
+Example:
+Create Order ✔
+Reduce Stock ✔
+Payment ❌
+
+
+2. Consistency
+The database must always remain in a valid state.
+
+Example:
+Before Order:
+Stock = 10
+After successful order:
+Stock = 9 (it should not go to -ve)
+The data remains consistent.
+
+
+3. Isolation
+Multiple users can perform transactions simultaneously without affecting each other.
+Example:
+Two customers try to buy the last product.
+The system ensures only one successful purchase if stock is 1.
+
+
+4. Durability
+Once a transaction is committed, the data is permanently saved.
+Even if the server crashes afterward, the committed data remains.
+
+
+Commit:
+A Commit permanently saves the changes, Executed after success.
+
+Rollback:
+A Rollback cancels all changes made during the transaction ,Executed after failure.
+
+--> SAP Commerce uses Spring's Transaction Management.
+@Transactional Annotation
+Spring provides the @Transactional annotation.
+
+Example:
+@Transactional
+public void placeOrder() {
+    Business Logic
+}
+
+It ensures that all database operations inside the method are executed as one transaction.
+If an exception occurs, Spring rolls back the transaction.
+
+
+
+Why Transactions are Used?
+Transactions help to:
+Prevent incomplete updates
+Maintain data integrity (ensuring that data is accurate, correct)
+Ensure consistency (Keep data valid )
+Recover safely from errors
+
+Which layer usually manages transactions in SAP Commerce?
+The Service layer, typically using Spring's @Transactional annotation.
+
+. Why are transactions important in e-commerce?
+They ensure operations like order creation, payment, and inventory updates remain consistent and prevent partial or incorrect data from being stored.
